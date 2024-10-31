@@ -62,8 +62,12 @@ func main() {
 		result = machine.LastPoppedStackElem()
 	} else {
 		env := object.NewEnvironment()
+		macroEnv := object.NewEnvironment()
 		start := time.Now()
-		result = evaluator.Eval(program, env)
+
+		evaluator.DefineMacros(program, macroEnv)
+		expanded := evaluator.ExpandMacros(program, macroEnv)
+		result = evaluator.Eval(expanded, env)
 		duration = time.Since(start)
 	}
 
